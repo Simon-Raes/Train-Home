@@ -4,6 +4,7 @@ import android.app.Application
 import be.simonraes.trainhome.di.AppComponent
 import be.simonraes.trainhome.di.AppModule
 import be.simonraes.trainhome.di.DaggerAppComponent
+import com.facebook.stetho.Stetho
 
 
 fun thisWorksLikeAStatic() = "hi"
@@ -21,5 +22,7 @@ class TrainHomeApplication : Application() {
         appComponent = DaggerAppComponent.builder()
                 .appModule(AppModule(this))
                 .build()
+
+        Stetho.initializeWithDefaults(this);
     }
 }
