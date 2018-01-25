@@ -31,6 +31,12 @@ class StationsActivity: AppCompatActivity(), StationsPresenter.StationsView {
         stationsPresenter.start()
     }
 
+    override fun onStop() {
+        super.onStop()
+
+        stationsPresenter.stop()
+    }
+
     override fun setData(stations: List<Station>) {
         println("got data from the presenter: $stations")
     }

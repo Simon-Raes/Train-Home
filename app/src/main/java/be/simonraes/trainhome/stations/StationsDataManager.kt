@@ -17,11 +17,9 @@ class StationsDataManager @Inject constructor(val apiManager: ApiManager,
         return apiManager.stations()
                 .map(Stations::stations)
                 .flatMapCompletable(this::insertStations)
-
     }
 
     private fun insertStations(stations: List<Station>): Completable =
             Completable.fromAction { stationsDao.insertAll(stations) }
-
 
 }
