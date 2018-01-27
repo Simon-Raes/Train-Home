@@ -1,4 +1,4 @@
-package be.simonraes.trainhome.db
+package be.simonraes.trainhome.persistence.db
 
 import android.arch.persistence.room.RoomDatabase
 import android.arch.persistence.room.Database

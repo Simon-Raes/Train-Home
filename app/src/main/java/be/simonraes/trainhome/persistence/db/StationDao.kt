@@ -1,8 +1,9 @@
-package be.simonraes.trainhome.db
+package be.simonraes.trainhome.persistence.db
 
 import android.arch.persistence.room.*
 import be.simonraes.trainhome.entities.Station
 import be.simonraes.trainhome.entities.Station.Companion.STATIONS_COLUMN_ID
+import be.simonraes.trainhome.entities.Station.Companion.STATIONS_COLUMN_NAME
 import be.simonraes.trainhome.entities.Station.Companion.STATIONS_TABLE
 import io.reactivex.Flowable
 import io.reactivex.Single
@@ -10,7 +11,7 @@ import io.reactivex.Single
 @Dao
 interface StationDao {
 
-    @Query("SELECT * FROM $STATIONS_TABLE")
+    @Query("SELECT * FROM $STATIONS_TABLE ORDER BY $STATIONS_COLUMN_NAME")
     fun getAll(): Flowable<List<Station>>
 
     @Query("SELECT * FROM $STATIONS_TABLE WHERE $STATIONS_COLUMN_ID = :id LIMIT 1")

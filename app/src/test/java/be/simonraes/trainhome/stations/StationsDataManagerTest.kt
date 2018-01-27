@@ -1,7 +1,7 @@
 package be.simonraes.trainhome.stations
 
 import be.simonraes.trainhome.api.ApiManager
-import be.simonraes.trainhome.db.StationDao
+import be.simonraes.trainhome.persistence.db.StationDao
 import be.simonraes.trainhome.entities.Station
 import be.simonraes.trainhome.entities.Stations
 import io.mockk.MockKAnnotations

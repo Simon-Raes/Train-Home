@@ -1,6 +1,6 @@
 package be.simonraes.trainhome.di
 
-import be.simonraes.trainhome.MainActivity
+import be.simonraes.trainhome.home.HomeActivity
 import be.simonraes.trainhome.stations.StationsActivity
 import dagger.Component
 import javax.inject.Singleton
@@ -14,7 +14,7 @@ import javax.inject.Singleton
     MiscellaneousModule::class]
 )
 interface AppComponent {
-    fun inject(mainActivity: MainActivity)
+    fun inject(homeActivity: HomeActivity)
     fun inject(stationsActivity: StationsActivity)
 
 }

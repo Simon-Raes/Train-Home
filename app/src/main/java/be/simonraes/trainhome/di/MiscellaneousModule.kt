@@ -20,4 +20,10 @@ internal class MiscellaneousModule {
     fun provideSchedulerProvider(): SchedulerProvider {
         return AppSchedulerProvider()
     }
+
+    @Provides
+    @Singleton
+    fun providesGson(): Gson {
+        return Gson()
+    }
 }

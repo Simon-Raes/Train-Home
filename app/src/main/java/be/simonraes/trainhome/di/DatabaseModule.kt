@@ -2,7 +2,7 @@ package be.simonraes.trainhome.di
 
 import android.arch.persistence.room.Room
 import android.content.Context
-import be.simonraes.trainhome.db.AppDatabase
+import be.simonraes.trainhome.persistence.db.AppDatabase
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
