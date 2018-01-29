@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">Train Home</string>
-    <string name="stations_title">Select your home station</string>
+
     <string name="home_station_selection">Click here to select your station</string>
     <string name="home_station_selected">Your home station is:</string>
+    <string name="home_connections">Your connections home:</string>
+
+    <string name="stations_title">Select your home station</string>
+
 </resources>

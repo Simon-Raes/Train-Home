@@ -14,6 +14,9 @@ interface StationDao {
     @Query("SELECT * FROM $STATIONS_TABLE ORDER BY $STATIONS_COLUMN_NAME")
     fun getAll(): Flowable<List<Station>>
 
+    @Query("SELECT * FROM $STATIONS_TABLE ORDER BY $STATIONS_COLUMN_NAME")
+    fun getAllAsSingle(): Single<List<Station>>
+
     @Query("SELECT * FROM $STATIONS_TABLE WHERE $STATIONS_COLUMN_ID = :id LIMIT 1")
     fun findById(id: String): Single<Station>
 

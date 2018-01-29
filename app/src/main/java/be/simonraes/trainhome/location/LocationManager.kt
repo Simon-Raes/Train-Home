@@ -28,7 +28,9 @@ class LocationManager @Inject constructor(val fusedLocationProviderClient: Fused
                         stations.forEach({
                             Location.distanceBetween(
                                     it.locationY.toDouble(), it.locationX.toDouble(),
-                                    location.latitude, location.longitude,
+                                    // TODO use real location instead of hardcoded dampoort
+//                                    location.latitude, location.longitude,
+                                    51.056819, 3.740584,
                                     results)
 
                             if (results[0] < smallestDistance) {

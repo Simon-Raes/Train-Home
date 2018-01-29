@@ -34,10 +34,17 @@ class StationsActivity : AppCompatActivity(), StationsPresenter.StationsView, St
 
         TrainHomeApplication.appComponent.inject(this)
 
-        recyclerview_stations.layoutManager = LinearLayoutManager(this)
+        setupRecyclerView()
+        setupPresenter()
+    }
+
+    fun setupRecyclerView() {
         stationsAdapter = StationsAdapter(this, this)
         recyclerview_stations.adapter = stationsAdapter
+        recyclerview_stations.layoutManager = LinearLayoutManager(this)
+    }
 
+    fun setupPresenter() {
         stationsPresenter.attachView(this)
         stationsPresenter.start()
     }
@@ -46,6 +53,13 @@ class StationsActivity : AppCompatActivity(), StationsPresenter.StationsView, St
         super.onStop()
 
         stationsPresenter.stop()
+    }
+
+    override fun onStationClicked(station: Station) {
+        stationsPresenter.stationSelected(station)
+
+        // TODO better feedback than this
+        Toast.makeText(this, "Saved!", Toast.LENGTH_SHORT).show()
     }
 
     override fun setData(stations: List<Station>) {
@@ -60,10 +74,5 @@ class StationsActivity : AppCompatActivity(), StationsPresenter.StationsView, St
         finish()
     }
 
-    override fun onStationClicked(station: Station) {
-        stationsPresenter.stationSelected(station)
 
-        // TODO better feedback than this
-        Toast.makeText(this, "Saved!", Toast.LENGTH_SHORT).show()
-    }
 }

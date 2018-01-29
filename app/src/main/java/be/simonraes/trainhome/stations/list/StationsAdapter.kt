@@ -8,7 +8,7 @@ import be.simonraes.trainhome.R
 import be.simonraes.trainhome.entities.Station
 import be.simonraes.trainhome.stations.StationsClickListener
 
-class StationsAdapter(val context: Context, val stationsClickListener: StationsClickListener) : RecyclerView.Adapter<StationViewHolder>() {
+class StationsAdapter(private val context: Context, private val stationsClickListener: StationsClickListener) : RecyclerView.Adapter<StationViewHolder>() {
 
     private var stations: List<Station>? = null
 
@@ -27,5 +27,4 @@ class StationsAdapter(val context: Context, val stationsClickListener: StationsC
     }
 
     override fun getItemCount() = stations?.size ?: 0
-
 }
