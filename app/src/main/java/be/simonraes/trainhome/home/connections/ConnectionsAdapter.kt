@@ -17,7 +17,7 @@ class ConnectionsAdapter(private val context: Context, private val connectionsCl
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ConnectionViewHolder {
-        val view = LayoutInflater.from(context).inflate(R.layout.listitem_station, parent, false)
+        val view = LayoutInflater.from(context).inflate(R.layout.listitem_connection, parent, false)
         return ConnectionViewHolder(view, connectionsClickListener)
     }
 

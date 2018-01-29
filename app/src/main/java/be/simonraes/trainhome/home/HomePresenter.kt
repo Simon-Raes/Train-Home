@@ -53,7 +53,7 @@ class HomePresenter @Inject constructor(private val preferencesHelper: Preferenc
                     .subscribeOn(schedulerProvider.io())
                     .observeOn(schedulerProvider.ui())
                     .subscribe(
-                            { connections -> println(connections) },
+                            { connections -> homeView.showConnectionsView(connections) },
                             { println(it.message) })
 
             compositeDisposable.add(disposable)
