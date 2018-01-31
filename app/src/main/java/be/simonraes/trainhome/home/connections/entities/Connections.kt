@@ -18,7 +18,7 @@ data class Connection(
 		@SerializedName("arrival") val arrival: Arrival,
 		@SerializedName("duration") val duration: Int,
 		@SerializedName("alerts") val alerts: Alerts,
-		@SerializedName("vias") val vias: Vias
+		@SerializedName("vias") val vias: Vias?
 )
 
 data class Arrival(

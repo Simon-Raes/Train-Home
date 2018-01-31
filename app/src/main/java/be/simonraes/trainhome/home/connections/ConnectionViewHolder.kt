@@ -3,7 +3,7 @@ package be.simonraes.trainhome.home.connections
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import be.simonraes.trainhome.home.connections.entities.Connection
-import be.simonraes.trainhome.utils.DateUtils
+import be.simonraes.trainhome.home.connections.entities.DisplayConnection
 import kotlinx.android.synthetic.main.listitem_connection.view.*
 
 /**
@@ -17,9 +17,8 @@ class ConnectionViewHolder constructor(view: View, connectionsClickListener: Con
         itemView.setOnClickListener { connectionsClickListener.onConnectionClicked() }
     }
 
-    fun bindData(connection: Connection) {
-        // todo format time
-        itemView.textview_connection_time.text = DateUtils.formatStuff( connection.departure.time.toLong())
-        itemView.textview_connection_duration.text = DateUtils.secondsToFormattedDuration( connection.duration.toLong())
+    fun bindData(connection: DisplayConnection) {
+        itemView.textview_connection_time.text = connection.departure
+        itemView.textview_connection_duration.text = connection.duration
     }
 }

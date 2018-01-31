@@ -6,12 +6,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import be.simonraes.trainhome.R
 import be.simonraes.trainhome.home.connections.entities.Connection
+import be.simonraes.trainhome.home.connections.entities.DisplayConnection
 
 class ConnectionsAdapter(private val context: Context, private val connectionsClickListener: ConnectionsClickListener) : RecyclerView.Adapter<ConnectionViewHolder>() {
 
-    private var connections: List<Connection>? = null
+    private var connections: List<DisplayConnection>? = null
 
-    fun setData(connections: List<Connection>) {
+    fun setData(connections: List<DisplayConnection>) {
         this.connections = connections
         notifyDataSetChanged()
     }

@@ -11,7 +11,7 @@ import be.simonraes.trainhome.constants.STATIONS
 import be.simonraes.trainhome.constants.STATION_SELECTED
 import be.simonraes.trainhome.home.connections.ConnectionsAdapter
 import be.simonraes.trainhome.home.connections.ConnectionsClickListener
-import be.simonraes.trainhome.home.connections.entities.Connection
+import be.simonraes.trainhome.home.connections.entities.DisplayConnection
 import be.simonraes.trainhome.stations.StationsActivity
 import kotlinx.android.synthetic.main.activity_home.*
 import javax.inject.Inject
@@ -87,7 +87,7 @@ class HomeActivity : AppCompatActivity(), HomePresenter.HomeView, ConnectionsCli
         textview_home_selected_station.text = name
     }
 
-    override fun showConnectionsView(connections: List<Connection>) {
+    override fun showConnectionsView(connections: List<DisplayConnection>) {
         connectionsAdapter.setData(connections)
     }
 
