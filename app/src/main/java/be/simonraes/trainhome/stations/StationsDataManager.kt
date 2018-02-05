@@ -18,6 +18,8 @@ class StationsDataManager @Inject constructor(val apiManager: ApiManager,
 
     fun getStations(): Flowable<List<Station>> = stationsDao.getAll()
 
+    fun getByName(query: String) = stationsDao.getByName(query)
+
     /*
     * @return A list of DisplayStations, sorted on distance from the homeStation.
     */

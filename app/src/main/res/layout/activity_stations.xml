@@ -1,27 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/textview_stations"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/stations_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/edittext_stations_search"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/stations_title"/>
+        android:layout_marginTop="@dimen/padding_medium"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textview_stations" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerview_stations"
         android:layout_width="0dp"
-        tools:listitem="@layout/listitem_station"
         android:layout_height="0dp"
+        android:layout_marginTop="@dimen/padding_medium"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textview_stations" />
+        app:layout_constraintTop_toBottomOf="@id/edittext_stations_search"
+        tools:listitem="@layout/listitem_station" />
 
 </android.support.constraint.ConstraintLayout>

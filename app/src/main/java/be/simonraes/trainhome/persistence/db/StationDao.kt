@@ -14,6 +14,9 @@ interface StationDao {
     @Query("SELECT * FROM $STATIONS_TABLE ORDER BY $STATIONS_COLUMN_NAME")
     fun getAll(): Flowable<List<Station>>
 
+    @Query("SELECT * FROM $STATIONS_TABLE WHERE $STATIONS_COLUMN_NAME LIKE '%' || :name || '%' ORDER BY $STATIONS_COLUMN_NAME")
+    fun getByName(name: String): Flowable<List<Station>>
+
     @Query("SELECT * FROM $STATIONS_TABLE ORDER BY $STATIONS_COLUMN_NAME")
     fun getAllAsSingle(): Single<List<Station>>
 

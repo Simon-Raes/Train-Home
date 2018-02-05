@@ -5,12 +5,16 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.text.TextWatcher
 import android.widget.Toast
 import be.simonraes.trainhome.R
 import be.simonraes.trainhome.TrainHomeApplication
 import be.simonraes.trainhome.constants.STATION_SELECTED
 import be.simonraes.trainhome.entities.Station
 import be.simonraes.trainhome.stations.list.StationsAdapter
+import com.jakewharton.rxbinding2.widget.RxTextView
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_stations.*
 import javax.inject.Inject
 
@@ -28,14 +32,24 @@ class StationsActivity : AppCompatActivity(), StationsPresenter.StationsView, St
     @Inject
     lateinit var stationsPresenter: StationsPresenter
 
+    var compositeDisposable: CompositeDisposable = CompositeDisposable()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_stations)
 
         TrainHomeApplication.appComponent.inject(this)
 
+        setupTextListener()
         setupRecyclerView()
         setupPresenter()
+    }
+
+    fun setupTextListener() {
+        val disposable = RxTextView.textChanges(edittext_stations_search)
+                .map(CharSequence::toString)
+                .subscribe({ text -> stationsPresenter.onSearchTextChanged(text) })
+        compositeDisposable.add(disposable)
     }
 
     fun setupRecyclerView() {
@@ -53,6 +67,7 @@ class StationsActivity : AppCompatActivity(), StationsPresenter.StationsView, St
         super.onStop()
 
         stationsPresenter.stop()
+        compositeDisposable.dispose()
     }
 
     override fun onStationClicked(station: Station) {

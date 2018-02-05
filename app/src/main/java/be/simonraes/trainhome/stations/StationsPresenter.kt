@@ -3,7 +3,9 @@ package be.simonraes.trainhome.stations
 import be.simonraes.trainhome.entities.Station
 import be.simonraes.trainhome.persistence.PreferencesHelper
 import be.simonraes.trainhome.rx.SchedulerProvider
+import io.reactivex.BackpressureStrategy
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.subjects.BehaviorSubject
 import javax.inject.Inject
 
 class StationsPresenter @Inject constructor(val stationsDataManager: StationsDataManager,
@@ -20,13 +22,22 @@ class StationsPresenter @Inject constructor(val stationsDataManager: StationsDat
 
     private lateinit var stationsView: StationsView
 
+    private val searchSubject = BehaviorSubject.createDefault<String>("")
+
     private val compositeDisposable = CompositeDisposable()
+
+    private var filter = ""
 
     fun attachView(stationsView: StationsView) {
         this.stationsView = stationsView
     }
 
     fun start() {
+        downloadAndSaveStations()
+        displayStations()
+    }
+
+    private fun downloadAndSaveStations() {
         // TODO do this max once a day or something (unless manually refreshed)
         // simple check so we don't keep downloading during development: download list until home has been set
         if (!preferencesHelper.homeStationSet()) {
@@ -40,8 +51,15 @@ class StationsPresenter @Inject constructor(val stationsDataManager: StationsDat
                             { error -> println("something broke: $error.message") })
             compositeDisposable.addAll(disposable)
         }
+    }
 
-        val stationsDisposable = stationsDataManager.getStations()
+    private fun displayStations() {
+        val stationsDisposable = searchSubject.toFlowable(BackpressureStrategy.LATEST)
+                .flatMap { query ->
+                    // todo test if this works with data updates
+                    stationsDataManager.getByName(query)
+                            .subscribeOn(schedulerProvider.io())
+                }
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
                 .subscribe(
@@ -53,8 +71,20 @@ class StationsPresenter @Inject constructor(val stationsDataManager: StationsDat
         compositeDisposable.addAll(stationsDisposable)
     }
 
+    private fun shouldShowStation(station: Station): Boolean {
+        if (filter == "") {
+            return true
+        }
+
+        return station.name.contains(filter)
+    }
+
     fun stop() {
         compositeDisposable.dispose()
+    }
+
+    fun onSearchTextChanged(newText: String) {
+        searchSubject.onNext(newText)
     }
 
     fun stationSelected(station: Station) {
