@@ -16,8 +16,7 @@ data class DisplayConnection(val departure: String,
             val formattedArrival = dateFormatter.formatTimestamp(connection.departure.time.toLong())
             val formattedDuration = dateFormatter.secondsToFormattedDuration(connection.duration.toLong())
             val formattedDelay = dateFormatter.secondsToFormattedDuration(connection.arrival.delay.toLong())
-            // todo handle case where it's null
-            val vias = connection.vias?.number.toString()
+            val vias = connection.vias?.number ?: "0"
 
             return DisplayConnection(formattedDeparture, formattedArrival, formattedDuration, formattedDelay, vias)
         }

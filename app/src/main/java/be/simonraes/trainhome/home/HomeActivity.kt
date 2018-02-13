@@ -70,7 +70,7 @@ class HomeActivity : AppCompatActivity(), HomePresenter.HomeView, ConnectionsCli
     }
 
     override fun onConnectionClicked() {
-        // TODO some detai screen or something?
+        // TODO expand to show more info?
     }
 
     override fun showStationSelectionView() {
@@ -87,13 +87,19 @@ class HomeActivity : AppCompatActivity(), HomePresenter.HomeView, ConnectionsCli
         textview_home_selected_station.text = name
     }
 
-    override fun showConnectionsView(connections: List<DisplayConnection>) {
+    override fun setClosestStationInfo(name: String) {
+        // todo strings etc
+        textview_home_connections_title.text = "Connections from $name"
+    }
+
+    override fun showConnections(connections: List<DisplayConnection>) {
         connectionsAdapter.setData(connections)
     }
 
     override fun showNoConnectionsView() {
         // TODO some info message about how there are no connections today
         // or do we always show the next three, even for tomorrow
+
 
     }
 

@@ -75,7 +75,7 @@ data class Alert(
 )
 
 data class Vias(
-		@SerializedName("number") val number: Int,
+		@SerializedName("number") val number: String,
 		@SerializedName("via") val via: List<Via>
 )
 

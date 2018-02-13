@@ -11,14 +11,20 @@ import kotlinx.android.synthetic.main.listitem_connection.view.*
  */
 class ConnectionViewHolder constructor(view: View, connectionsClickListener: ConnectionsClickListener) : RecyclerView.ViewHolder(view) {
 
-    private lateinit var connection: Connection
+    private lateinit var connection: DisplayConnection
 
     init {
         itemView.setOnClickListener { connectionsClickListener.onConnectionClicked() }
     }
 
     fun bindData(connection: DisplayConnection) {
+        this.connection = connection
+
         itemView.textview_connection_time.text = connection.departure
         itemView.textview_connection_duration.text = connection.duration
+
+        if(connection.vias.toInt() > 0) {
+            itemView.textview_connection_vias.text = connection.vias
+        }
     }
 }

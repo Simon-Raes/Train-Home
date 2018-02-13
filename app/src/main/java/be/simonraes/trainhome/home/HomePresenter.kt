@@ -7,7 +7,6 @@ import be.simonraes.trainhome.persistence.PreferencesHelper
 import be.simonraes.trainhome.persistence.db.StationDao
 import be.simonraes.trainhome.rx.SchedulerProvider
 import be.simonraes.trainhome.utils.DateFormatter
-import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
@@ -26,7 +25,9 @@ class HomePresenter @Inject constructor(private val preferencesHelper: Preferenc
 
         fun setSelectedStationInfo(name: String)
 
-        fun showConnectionsView(connections: List<DisplayConnection>)
+        fun setClosestStationInfo(name: String)
+
+        fun showConnections(connections: List<DisplayConnection>)
 
         fun showNoConnectionsView()
     }
@@ -50,7 +51,9 @@ class HomePresenter @Inject constructor(private val preferencesHelper: Preferenc
             val disposable = stationDao.getAllAsSingle()
                     // todo move (partially) to datamanager?
                     .flatMap { locationManager.findClosestStation(it) }
+                    .doOnSuccess { homeView.setClosestStationInfo(it.name) }
                     .flatMap {
+                        println("got nearest station: ${it.name}")
                         connectionsDataManager.getConnections(it, preferencesHelper.getHomeStation())
                                 .subscribeOn(schedulerProvider.io())
                     }
@@ -60,8 +63,9 @@ class HomePresenter @Inject constructor(private val preferencesHelper: Preferenc
                     .subscribeOn(schedulerProvider.io())
                     .observeOn(schedulerProvider.ui())
                     .subscribe(
-                            { connections -> homeView.showConnectionsView(connections) },
-                            { println(it.message) })
+                            { connections -> homeView.showConnections(connections) },
+                            { println("some error lol $it.message") }
+                    )
 
             compositeDisposable.add(disposable)
 
