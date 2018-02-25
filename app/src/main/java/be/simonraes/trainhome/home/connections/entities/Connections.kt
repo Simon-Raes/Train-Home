@@ -28,7 +28,7 @@ data class Arrival(
 		@SerializedName("time") val time: Int,
 		@SerializedName("vehicle") val vehicle: String,
 		@SerializedName("vehicleinfo") val vehicleinfo: Vehicleinfo,
-		@SerializedName("platform") val platform: Int,
+		@SerializedName("platform") val platform: String,
 		@SerializedName("platforminfo") val platforminfo: Platforminfo,
 		@SerializedName("arrived") val arrived: Int,
 		@SerializedName("canceled") val canceled: Int,
