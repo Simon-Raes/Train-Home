@@ -10,7 +10,7 @@ import javax.inject.Inject
  */
 class DateFormatter @Inject constructor() {
 
-    val dateFormat = SimpleDateFormat("hh:mm", Locale.getDefault())
+    val dateFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
 
     fun formatTimestamp(seconds: Long) : String {
         return dateFormat.format(Date(seconds * 1000))
