@@ -1,21 +1,32 @@
 package be.simonraes.trainhome.stations
 
 import be.simonraes.trainhome.entities.Station
+import be.simonraes.trainhome.location.LocationRetriever
+import be.simonraes.trainhome.location.distanceTo
+import be.simonraes.trainhome.location.entities.LatLong
 import be.simonraes.trainhome.persistence.PreferencesHelper
 import be.simonraes.trainhome.rx.SchedulerProvider
 import io.reactivex.BackpressureStrategy
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.Flowables
+import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
 import javax.inject.Inject
 
-class StationsPresenter @Inject constructor(val stationsDataManager: StationsDataManager,
-                                            val schedulerProvider: SchedulerProvider,
-                                            val preferencesHelper: PreferencesHelper) {
+class StationsPresenter @Inject constructor(private val stationsDataManager: StationsDataManager,
+                                            private val locationRetriever: LocationRetriever,
+                                            private val schedulerProvider: SchedulerProvider,
+                                            private val preferencesHelper: PreferencesHelper) {
 
     interface StationsView {
         fun setData(stations: List<Station>)
 
         fun setStationSelectedResult()
+
+        fun showNearestStationDialog(station: Station)
+
+        fun showGenericErrorMessage()
 
         fun closeScreen()
     }
@@ -25,8 +36,6 @@ class StationsPresenter @Inject constructor(val stationsDataManager: StationsDat
     private val searchSubject = BehaviorSubject.createDefault<String>("")
 
     private val compositeDisposable = CompositeDisposable()
-
-    private var filter = ""
 
     fun attachView(stationsView: StationsView) {
         this.stationsView = stationsView
@@ -48,7 +57,10 @@ class StationsPresenter @Inject constructor(val stationsDataManager: StationsDat
                             {
                                 println("saved all stations!!")
                             },
-                            { error -> println("something broke: $error.message") })
+                            { error ->
+                                stationsView.showGenericErrorMessage()
+                                println("something broke: $error.message")
+                            })
             compositeDisposable.addAll(disposable)
         }
     }
@@ -67,16 +79,11 @@ class StationsPresenter @Inject constructor(val stationsDataManager: StationsDat
                             println("received a new list of stations: $it")
                             stationsView.setData(it)
                         },
-                        { error -> println("something broke: ${error.message}") })
+                        { error ->
+                            stationsView.showGenericErrorMessage()
+                            println("something broke: ${error.message}")
+                        })
         compositeDisposable.addAll(stationsDisposable)
-    }
-
-    private fun shouldShowStation(station: Station): Boolean {
-        if (filter == "") {
-            return true
-        }
-
-        return station.name.contains(filter)
     }
 
     fun stop() {
@@ -92,5 +99,28 @@ class StationsPresenter @Inject constructor(val stationsDataManager: StationsDat
 
         stationsView.setStationSelectedResult()
         stationsView.closeScreen()
+    }
+
+    fun onLocationClicked() {
+        val currentLocationSingle = locationRetriever.currentLocation()
+        val stationsFlowable = stationsDataManager.getStations()
+
+        Flowables.combineLatest(currentLocationSingle.toFlowable(), stationsFlowable)
+        { currentLocation: LatLong, stations: List<Station> ->
+            stations.minBy { it.distanceTo(currentLocation) }
+        }
+                .map { station -> station }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        { stationsView.showNearestStationDialog(it) },
+                        {
+                            println("something went wrong ${it.message}")
+                            stationsView.showGenericErrorMessage()
+                        })
+
+
+        //
+
     }
 }

@@ -1,6 +1,6 @@
 package be.simonraes.trainhome.entities
 
-import be.simonraes.trainhome.location.LocationUtils
+import be.simonraes.trainhome.location.distanceTo
 
 /**
  *
@@ -13,7 +13,7 @@ data class DisplayStation(val name: String,
     companion object {
         fun stationToDisplayStation(station: Station, homeStation: Station): DisplayStation {
             return DisplayStation(station.name,
-                    LocationUtils.distanceBetween(station, homeStation))
+                    station.distanceTo(homeStation))
         }
     }
 }
